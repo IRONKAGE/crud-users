@@ -1,44 +1,24 @@
-var express = require('express');
-var app = express();
-var crud_users = [];
+var express = require('express')
+var app = express()
+var MongoClient = require('mongodb').MongoClient;
+
 const port = 3000;
 const host = "localhost";
 
+MongoClient.connect('mongodb://localhost:27017/crud_users')
+
 app.get('/crud-users', function (request, response){
-    var crudUserName = request.param('crudUserName');
-    if (crudUserName){
-        crud_users.forEach((item) => {
-            if (item.crudUserName === crudUserName){
-                response.send(item);
-                return;
-            };
-        });
-    };
     response.send(crud_users);
 });
 
-app.post('/crud-users', function (request, response){
-    var crudUserName = request.param('crudUserName');
-    if (crudUserName){
-        crud_users.push({
-            crudUserName,
-        });
-    }else{
-        response.res.status(500).json('о ні');
-    }
-    response.send(crud_users);
+app.post("/crud-users", (request, response) => {
+    if (err) throw err;
+    var userData = {
+        username: request.body.username
+    };
 });
 
 app.delete('/crud-users', function (request, response){
-    var crudUserName = request.param('crudUserName');
-    if (crudUserName){
-        crud_users.forEach((item) => {
-            if (item.crudUserName === crudUserName){
-                response.send(item);
-                return;
-            };
-        });
-    };
     response.send(crud_users);
 });
 
