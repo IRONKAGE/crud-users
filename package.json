@@ -1,0 +1,22 @@
+{
+  "name": "crud-users",
+  "version": "1.0.0",
+  "description": "inVerita",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IRONKAGE/crud-users.git"
+  },
+  "author": "IRONKAGE",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IRONKAGE/crud-users/issues"
+  },
+  "homepage": "https://github.com/IRONKAGE/crud-users#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
