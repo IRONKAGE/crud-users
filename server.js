@@ -1,45 +1,39 @@
 var express = require('express');
 var app = express();
-
-var mongoose = require('mongoose');
-var mongoDB = 'mongodb://127.0.0.1/crud-DB';
-mongoose.connect(mongoDB);
-mongoose.Promise = global.Promise;
-var crud_Users_Mongo = mongoose.connection;
-crud_Users_Mongo.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
-var SchemaUsers = mongoose.SchemaUsers;
-
-
-var crud = [];
+var crud_users = [];
 
 const port = 3000;
 const host = "localhost";
 
+var MongoClient = require('mongodb').MongoClient;
+const assert = require('assert');
+var MongoUrl = "mongodb://localhost:27017";
+const dbName = 'crudDB';
+
+MongoClient.connect(MongoUrl, function(err, client){
+    assert.equal(null, err);
+    console.log("ДБ створена!");
+    const db = client.db(dbName);
+    db.collection('users').find().toArray(function (err, result) {
+        if (err) throw err
+        console.log(result)
+    })
+});
+
 app.get('/crud-users', function (request, response){
-    var UserName = request.param('UserName');
-    if (UserName){
-        crud.forEach((item) => {
-            if (item.UserName === UserName){
-                response.send(item);
-                return;
-            };
-        });
-    };
-    response.send(crud);
+    response.send(MongoClient);
 });
 
 app.post("/crud-users", (request, response) => {
-    if (err) throw err;
-    var SchemaCrudUsers = new SchemaUsers({
-        first_name: String,
-        last_name: String
-    });
+    response.send(crud_users);
+});
+
+app.patch("/crud-users", (request, response) => {
     response.send(crud_users);
 });
 
 app.delete('/crud-users', function (request, response){
-    response.send(crud);
+    response.send(crud_users);
 });
 
 app.listen(port, host, function(){
