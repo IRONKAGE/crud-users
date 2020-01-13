@@ -1,1 +1,4 @@
 app.js
+.vscode/launch.json
+.vscode/settings.json
+node_modules

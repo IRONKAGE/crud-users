@@ -1,25 +1,45 @@
-var express = require('express')
-var app = express()
-var MongoClient = require('mongodb').MongoClient;
+var express = require('express');
+var app = express();
+
+var mongoose = require('mongoose');
+var mongoDB = 'mongodb://127.0.0.1/crud-DB';
+mongoose.connect(mongoDB);
+mongoose.Promise = global.Promise;
+var crud_Users_Mongo = mongoose.connection;
+crud_Users_Mongo.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+var SchemaUsers = mongoose.SchemaUsers;
+
+
+var crud = [];
 
 const port = 3000;
 const host = "localhost";
 
-MongoClient.connect('mongodb://localhost:27017/crud_users')
-
 app.get('/crud-users', function (request, response){
-    response.send(crud_users);
+    var UserName = request.param('UserName');
+    if (UserName){
+        crud.forEach((item) => {
+            if (item.UserName === UserName){
+                response.send(item);
+                return;
+            };
+        });
+    };
+    response.send(crud);
 });
 
 app.post("/crud-users", (request, response) => {
     if (err) throw err;
-    var userData = {
-        username: request.body.username
-    };
+    var SchemaCrudUsers = new SchemaUsers({
+        first_name: String,
+        last_name: String
+    });
+    response.send(crud_users);
 });
 
 app.delete('/crud-users', function (request, response){
-    response.send(crud_users);
+    response.send(crud);
 });
 
 app.listen(port, host, function(){
