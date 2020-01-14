@@ -26,11 +26,6 @@ router.get('/', (request, response, next) => {
 });
 
 router.post('/', (request, response, next) => {
-    // const crudUser ={
-    //     crudID: request.body.crudID,
-    //     first_name: request.body.first_name,
-    //     last_name: request.body.last_name
-    // };
     const crudUser = new Crud_Users({
         _id: new mongoose.Types.ObjectId(),
         first_name: request.body.first_name,
@@ -70,17 +65,6 @@ router.get('/:userId', (request, response, next) => {
             console.log(error);
             response.status(500).json({error: error});
         });
-        
-    // if (id === 'special'){
-    //     response.status(200).json({
-    //         message: 'Маєш ексклюзивний ID',
-    //         id: id
-    //     });
-    // }else{
-    //     response.status(200).json({
-    //         message: 'Пройшов ID'
-    //     });
-    // }
 });
 
 router.patch('/:userId', (request, response, next) => {
