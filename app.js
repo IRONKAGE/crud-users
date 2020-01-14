@@ -2,9 +2,19 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const mongoose =  require('mongoose');
 
 const userRoutes = require('./api/routes/users');
 const skilRoutes = require('./api/routes/skills');
+
+mongoose.connect(
+    'mongodb+srv://admin:' + 
+    process.env.MONGO_ATLAS_PW + 
+    '@nodejs-rest-inverita-crudusers-qd2mn.mongodb.net/test?retryWrites=true&w=majority',
+    {
+        useMongoClient: true
+    }
+)
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));

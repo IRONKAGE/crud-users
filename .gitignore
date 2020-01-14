@@ -3,3 +3,6 @@
 node_modules
 old.js
 demo.js
+CrudUserDB.js
+connectUsers.js
+trash
