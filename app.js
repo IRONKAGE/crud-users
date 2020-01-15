@@ -3,9 +3,13 @@ const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose =  require('mongoose');
+const expressSwagger = require('express-swagger-generator');
+// const swaggerUi = require('swagger-ui-express');
+// const swaggerDocument = require('./api-docs/swagger.json');
 
 const userRoutes = require('./api/routes/users');
 const skilRoutes = require('./api/routes/skills');
+const api_docsRoutes = require('./api/routes/api-docs');
 
 mongoose.connect(
     'mongodb+srv://admin:' + 
@@ -43,6 +47,8 @@ app.use((request, response, next) => {
 //Шляхи на сторінки
 app.use('/users', userRoutes);
 app.use('/skills', skilRoutes);
+app.use('/api-docs', api_docsRoutes);
+// app.use('/api-docs', swaggerUi.serve);
 
 // Головна сторінка
 app.get('/', (request, response, next) => {
@@ -50,6 +56,9 @@ app.get('/', (request, response, next) => {
         message: 'Сайт працює!'
     });
 });
+
+// app.get('/api-docs', api_docsRoutes);
+// app.get('/api-docs', swaggerUi.setup(swaggerDocument));
 
 //Опрацювання помилки 404
 app.use((request, response, next) => {

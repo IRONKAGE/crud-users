@@ -17,15 +17,28 @@
   },
   "homepage": "https://github.com/IRONKAGE/crud-users#readme",
   "dependencies": {
+    "apidoc-swagger": "^0.3.2",
     "async": "^3.1.0",
     "body-parser": "^1.19.0",
+    "connect": "^3.7.0",
     "express": "^4.17.1",
+    "gulp-apidoc-swagger": "^0.2.2",
+    "js-yaml": "^3.13.1",
     "mongo-express": "^0.54.0",
     "mongodb": "^3.4.1",
     "mongoose": "^5.8.7",
-    "morgan": "^1.9.1"
+    "mongoose-to-swagger": "^1.0.3",
+    "morgan": "^1.9.1",
+    "swagger": "^0.7.5",
+    "swagger-docs": "0.0.0-alpha2",
+    "swagger-editor": "^3.7.1",
+    "swagger-jsdoc": "^3.5.0",
+    "swagger-parser": "^8.0.4",
+    "swagger-tools": "^0.10.4",
+    "swagger-ui-express": "^4.1.2"
   },
   "devDependencies": {
+    "express-swagger-generator": "^1.1.17",
     "nodemon": "^2.0.2"
   }
 }
