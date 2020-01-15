@@ -11,6 +11,34 @@ const userRoutes = require('./api/routes/users');
 const skilRoutes = require('./api/routes/skills');
 const api_docsRoutes = require('./api/routes/api-docs');
 
+let options = {
+    swaggerDefinition: {
+        info: {
+            description: 'This is a sample server',
+            title: 'Swagger',
+            version: '1.0.0',
+        },
+        host: 'localhost:3000',
+        basePath: '/v1',
+        produces: [
+            "application/json",
+            "application/xml"
+        ],
+        schemes: ['http', 'https'],
+        securityDefinitions: {
+            JWT: {
+                type: 'apiKey',
+                in: 'header',
+                name: 'Authorization',
+                description: "",
+            }
+        }
+    },
+    basedir: __dirname, //app absolute path
+    files: ['./api/routes/api-docs.js'] //Path to the API handle folder
+};
+expressSwagger(options)
+
 mongoose.connect(
     'mongodb+srv://admin:' + 
     process.env.MONGO_ATLAS_PW + 
@@ -47,7 +75,7 @@ app.use((request, response, next) => {
 //Шляхи на сторінки
 app.use('/users', userRoutes);
 app.use('/skills', skilRoutes);
-app.use('/api-docs', api_docsRoutes);
+// app.use('/api-docs', api_docsRoutes);
 // app.use('/api-docs', swaggerUi.serve);
 
 // Головна сторінка
