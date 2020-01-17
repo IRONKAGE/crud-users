@@ -44,7 +44,6 @@ app.use((request, response, next) => {
 //Шляхи на сторінки
 app.use('/users', userRoutes);
 app.use('/skills', skillsRoutes);
-app.use('/api', skillsRoutes);
 
 
 // Головна сторінка для тесту =)
@@ -55,11 +54,7 @@ app.get('/', (request, response, next) => {
 });
 
 
-//Шлях на документацію
-app.use('/api-docs.json', function (req, res) {
-    res.json(require('./path/to/swaggerize/docs.json'));
-});
-app.use('/api-docs', swaggerUi());
+
 
 
 // Опис документації
@@ -68,10 +63,10 @@ let options = {
         info: {
             description: 'This is a sample server',
             title: 'Swagger',
-            version: '1.0.0'
+            version: '1.0.3'
         },
-        host: 'localhost:3002',
-        basePath: '/api',
+        host: 'localhost:3001',
+        basePath: '/skills',
         produces: ['application/json', 'application/xml'],
         schemes: ['http']
     },
@@ -80,6 +75,11 @@ let options = {
 };
 expressSwagger(options);
 
+//Шлях на документацію
+app.use('/api-docs.json', function (req, res) {
+    res.json(require('./path/to/swaggerize/docs.json'));
+});
+app.use('/api-docs', swaggerUi());
 
 //Опрацювання помилки 404
 app.use((request, response, next) => {
