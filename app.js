@@ -7,8 +7,8 @@ var swaggerUi = require('express-swaggerize-ui');
 
 
 //Шляхи на апки
-const userRoutes = require('./api/routes/users');
-const skillsRoutes = require('./api/routes/skills');
+const userRoutes = require('./api/routes/crud.users.routes');
+const skillsRoutes = require('./api/routes/crud.skills.routes');
 
 
 //Підключення БД
@@ -54,9 +54,6 @@ app.get('/', (request, response, next) => {
 });
 
 
-
-
-
 // Опис документації
 let options = {
     swaggerDefinition: {
@@ -66,12 +63,12 @@ let options = {
             version: '1.0.3'
         },
         host: 'localhost:3001',
-        basePath: '/skills',
+        basePath: '/api',
         produces: ['application/json', 'application/xml'],
         schemes: ['http']
     },
     basedir: __dirname, //app absolute path
-    files: ['./api/routes/skills.js'] //Path to the API handle folder
+    files: ['./api/routes/*.js'] //Path to the API handle folder
 };
 expressSwagger(options);
 

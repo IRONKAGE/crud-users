@@ -1,8 +1,15 @@
+'use strict'
+/**
+ * @typedef Crud-Users
+ * @property {id} _id.required
+ * @property {string} first_name.required
+ * @property {string} last_name.required
+ */
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 
-var Crud_Users = require('../models/user');
+var Crud_Users = require('../models/crud.user.models');
 
 router.get('/', (request, response, next) => {
     Crud_Users.find()

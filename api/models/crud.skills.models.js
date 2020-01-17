@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var crudSkillSchema = mongoose.Schema([{
-    // _id: mongoose.Schema.Types.ObjectId,
+    _id: mongoose.Schema.Types.ObjectId,
     soft_skill: String,
     hard_skill: String
 }]);

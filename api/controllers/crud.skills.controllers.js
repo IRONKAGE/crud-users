@@ -52,8 +52,8 @@ exports.getSkillsById = ((request, response, next) => {
 
 
 exports.createSkills = ((request, response, next) => {
-    const newCrudSkills = new CrudSkills(request.body);
-    newCrudSkills
+    const CrudSkills = new CrudSkills(request.body);
+    CrudSkills
     .save()
     .then(result => {
         console.log(result);
@@ -93,8 +93,8 @@ exports.patchSkills = ((request, response, next) => {
 
 
 exports.deleteSkills = ((request, response, next) => {
-    const id = request.params.id;
-    CrudSkills.remove({_id: id})
+    const skills_id = request.params.id;
+    CrudSkills.remove({_id: skills_id})
         .exec().
         then(result => {
             response.status(200).json(result);

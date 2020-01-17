@@ -1,9 +1,7 @@
-.vscode/launch.json
-.vscode/settings.json
+.vscode/
+node_modules/
 trash/
 api/db/db.json
 api/models/user.model.js
 api/routes/user.routes.js
 api/controllers/user.controller.js
-config.js
-node_modules/

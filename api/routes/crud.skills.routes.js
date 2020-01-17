@@ -1,7 +1,9 @@
 'use strict'
 /**
- * @typedef Skills
+ * @typedef Crud-Skills
+ * @property {id} _id.required
  * @property {string} soft_skill.required
+ * @property {string} hard_skill.required
  */
 var express = require('express');
 var skillsRouter = express.Router();
@@ -13,6 +15,7 @@ skillsRouter.get('/', skillsController.default)
  * @typedef UserUpdate
  * @property {string} id.required
  * @property {string} soft_skill.required
+ * @property {string} hard_skill.required
  */
 
 
@@ -61,7 +64,7 @@ skillsRouter.patch('/list/:id', skillsController.patchSkills)
  */
 
 
-skillsRouter.delete('list/:id', skillsController.patchSkills)
+skillsRouter.delete('list/:id', skillsController.deleteSkills)
 /**
  * This function delete a skills
  * put just whole new skills body to update
