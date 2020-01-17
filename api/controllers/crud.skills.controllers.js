@@ -1,11 +1,17 @@
-var express = require('express');
-var router = express.Router();
-var mongoose = require('mongoose');
+var CrudSkills = require('../models/crud.skills.models');
 
-var Crud_Users = require('../models/user');
+exports.default = ((request, response, next) => {
+    response.status(200).json({
+        message: "Навички користувачів витягнено"
+    });
+});
 
-router.get('/', (request, response, next) => {
-    Crud_Users.find()
+
+exports.getAllSkills = ((request, response, next) => {
+    CrudSkills.find({})
+        .sort([[request.query.orderBy, request.query.order]])
+        .skip(+request.query.page * +request.query.perPage)
+        .limit(+request.query.perPage)
         .exec()
         .then(documents => {
             console.log(documents);
@@ -25,34 +31,10 @@ router.get('/', (request, response, next) => {
         });
 });
 
-router.post('/', (request, response, next) => {
-    const crudUser = new Crud_Users({
-        _id: new mongoose.Types.ObjectId(),
-        first_name: request.body.first_name,
-        last_name: request.body.last_name
-    });
-    crudUser
-    .save()
-    .then(result => {
-        console.log(result);
-        response.status(201).json({
-            message: "POST запит",
-            createdCrudUser: result
-        });
-    })
-    .catch(error => {
-        console.log(error);
-        response.status(500).json({
-            error: error
-        });
-    });
-});
 
-
-// Для роботи з ID
-router.get('/:userId', (request, response, next) => {
-    const id = request.params.userId;
-    Crud_Users.findById(id)
+exports.getSkillsById = ((request, response, next) => {
+    const id = request.params.id;
+    CrudSkills.findById(id)
         .exec()
         .then(document => {
             console.log("З Бази данних", document);
@@ -68,13 +50,34 @@ router.get('/:userId', (request, response, next) => {
         });
 });
 
-router.patch('/:userId', (request, response, next) => {
-    const id = request.params.userId;
+
+exports.createSkills = ((request, response, next) => {
+    const newCrudSkills = new CrudSkills(request.body);
+    newCrudSkills
+    .save()
+    .then(result => {
+        console.log(result);
+        response.status(201).json({
+            message: "Навички створено",
+            createdSkillsUser: result
+        });
+    })
+    .catch(error => {
+        console.log(error);
+        response.status(500).json({
+            error: error
+        });
+    });
+});
+
+
+exports.patchSkills = ((request, response, next) => {
+    const id = request.params.id;
     const updateOperations = {};
     for (const operations of request.body){
         updateOperations[operations.changeNames] = operations.value;
     }
-    Crud_Users.update({_id: id}, {$set: updateOperations})
+    CrudSkills.update({_id: id}, {$set: updateOperations})
         .exec()
         .then(result =>  {
             console.log(response);
@@ -88,9 +91,10 @@ router.patch('/:userId', (request, response, next) => {
         });
 });
 
-router.delete('/:userId', (request, response, next) => {
-    const id = request.params.userId;
-    Crud_Users.remove({_id: id})
+
+exports.deleteSkills = ((request, response, next) => {
+    const id = request.params.id;
+    CrudSkills.remove({_id: id})
         .exec().
         then(result => {
             response.status(200).json(result);
@@ -102,5 +106,3 @@ router.delete('/:userId', (request, response, next) => {
             });
         });
 });
-
-module.exports = router;

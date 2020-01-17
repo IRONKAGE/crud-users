@@ -1,5 +1,0 @@
-{
-    "env": {
-        "MONGO_ATLAS_PW": "nodejs-rest-inverita-crudusers"
-    }
-}

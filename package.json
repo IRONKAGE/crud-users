@@ -1,8 +1,8 @@
 {
   "name": "crud-users",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "description": "inVerita",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -19,13 +19,17 @@
   "dependencies": {
     "async": "^3.1.0",
     "body-parser": "^1.19.0",
+    "connect": "^3.7.0",
     "express": "^4.17.1",
-    "mongo-express": "^0.54.0",
-    "mongodb": "^3.4.1",
+    "express-swaggerize-ui": "^1.1.0",
+    "mongodb": "^3.5.0",
     "mongoose": "^5.8.7",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "swagger-express-router": "^1.0.0",
+    "swagger-ui-express": "^4.1.2"
   },
   "devDependencies": {
+    "express-swagger-generator": "^1.1.17",
     "nodemon": "^2.0.2"
   }
 }
