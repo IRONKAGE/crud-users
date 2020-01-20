@@ -8,10 +8,7 @@ exports.default = ((request, response, next) => {
 
 
 exports.getAllSkills = ((request, response, next) => {
-    CrudSkills.find({})
-        .sort([[request.query.orderBy, request.query.order]])
-        .skip(+request.query.page * +request.query.perPage)
-        .limit(+request.query.perPage)
+    CrudSkills.find()
         .exec()
         .then(documents => {
             console.log(documents);

@@ -58,25 +58,27 @@ app.get('/', (request, response, next) => {
 let options = {
     swaggerDefinition: {
         info: {
-            description: 'This is a sample server',
+            description: 'This is a server for crud users',
             title: 'Swagger',
-            version: '1.0.3'
+            version: '1.0.5'
         },
-        host: 'localhost:3001',
-        basePath: '/api',
-        produces: ['application/json', 'application/xml'],
+        host: 'localhost:15000',
+        basePath: '/',
+        produces: ['application/json'],
         schemes: ['http']
     },
     basedir: __dirname, //app absolute path
-    files: ['./api/routes/*.js'] //Path to the API handle folder
+    files: ['./api/routes/crud.users.routes.js', './api/routes/crud.skills.routes.js'] //Path to the API handle folder
 };
 expressSwagger(options);
+
 
 //Шлях на документацію
 app.use('/api-docs.json', function (req, res) {
     res.json(require('./path/to/swaggerize/docs.json'));
 });
 app.use('/api-docs', swaggerUi());
+
 
 //Опрацювання помилки 404
 app.use((request, response, next) => {
