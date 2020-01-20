@@ -1,7 +1,7 @@
 'use strict'
 /**
  * @typedef CrudUsers
- * @property {id} _id.required
+ * @property {number} _id.required
  * @property {string} first_name.required
  * @property {string} last_name.required
  * @property {number} age.required
@@ -24,8 +24,18 @@ var Crud_Users = require('../models/crud.user.models');
  * @returns {object} 200 - All User
  * @returns {Error}  default - Unexpected error
  */
+
+// var min_age = {age: $gte};
+// crudUserSchema.collection("age").sort(query).toArray(function(error, response){
+//     crudUserSchema.close()
+// });
 userRouter.get('/', (request, response, next) => {
     Crud_Users.find(request.query)
+    // Crud_Users.find({$regex: new RegExp(query)},
+    // {_id: 0, __v: 0},
+    // function(error, data){
+    //     response.json(data);
+    // }).limit(10)
 
     // request.query = {"first_name": /\w+/}, {"age": {$lte : request.age.query}} || {
     //     "min_age" : {"$gte" : request.age.query},
