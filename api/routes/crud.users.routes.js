@@ -4,6 +4,7 @@
  * @property {id} _id.required
  * @property {string} first_name.required
  * @property {string} last_name.required
+ * @property {number} age.required
  */
 var express = require('express');
 var userRouter = express.Router();
@@ -15,28 +16,40 @@ var Crud_Users = require('../models/crud.user.models');
  * This function gets main
  * @route GET /users
  * @group CrudUsers - Operations about all Users
+ * @param {string} first_name.query - Ім'я
+ * @param {string} last_name.query - Прізвище
+ * @param {number} age.query - Вік
+ * @param {number} min_age.query - Мінімальний вік
+ * @param {number} max_age.query - Максимальний вік
  * @returns {object} 200 - All User
  * @returns {Error}  default - Unexpected error
  */
 userRouter.get('/', (request, response, next) => {
-    Crud_Users.find()
-        .exec()
-        .then(documents => {
-            console.log(documents);
-            if (documents.length >= 0){
-                response.status(200).json(documents);
-            }else{
-                response.status(404).json({
-                    message: 'Такої сторінки не знайдено'
-                });
-            }
-        })
-        .catch(error => {
-            console.log(error);
-            response.status(500).json({
-                error: error
+    Crud_Users.find(request.query)
+
+    // request.query = {"first_name": /\w+/}, {"age": {$lte : request.age.query}} || {
+    //     "min_age" : {"$gte" : request.age.query},
+    //     "max_age" : {"$lte" : request.age.query}
+    // }
+    // .regex(/\w+/g)
+    // .where("first_name")
+    .exec()
+    .then(documents => {
+        console.log(documents);
+        if (documents.length >= 0){
+            response.status(200).json(documents);
+        }else{
+            response.status(404).json({
+                message: 'Такої сторінки не знайдено'
             });
+        }
+    })
+    .catch(error => {
+        console.log(error);
+        response.status(500).json({
+            error: error
         });
+    });
 });
 
 
@@ -79,7 +92,8 @@ userRouter.post('/', (request, response, next) => {
     const crudUser = new Crud_Users({
         _id: new mongoose.Types.ObjectId(),
         first_name: request.body.first_name,
-        last_name: request.body.last_name
+        last_name: request.body.last_name,
+        age: request.body.age
     });
     crudUser
     .save()
