@@ -1,12 +1,14 @@
 'use strict'
+
+var express = require('express');
+var skillsRouter = express.Router();
+
 /**
  * @typedef CrudSkills
  * @property {id} _id.required
  * @property {string} soft_skill.required
  * @property {string} hard_skill.required
  */
-var express = require('express');
-var skillsRouter = express.Router();
 var skillsController = require('../controllers/crud.skills.controllers');
 
 

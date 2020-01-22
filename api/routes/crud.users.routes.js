@@ -1,4 +1,8 @@
 'use strict'
+
+var express = require('express');
+var userRouter = express.Router();
+
 /**
  * @typedef CrudUsers
  * @property {number} _id.required
@@ -6,10 +10,8 @@
  * @property {string} last_name.required
  * @property {number} age.required
  */
-var express = require('express');
-var userRouter = express.Router();
-var mongoose = require('mongoose');
 var Crud_Users = require('../models/crud.user.models');
+// var min_age = document.createElement("man_age").value;
 
 
 /**
@@ -18,7 +20,7 @@ var Crud_Users = require('../models/crud.user.models');
  * @group CrudUsers - Operations about all Users
  * @param {string} first_name.query - Ім'я
  * @param {string} last_name.query - Прізвище
- * @param {number} age.query - Вік
+ * @param {number} age.query - Отримання конкретного віку
  * @param {number} min_age.query - Мінімальний вік
  * @param {number} max_age.query - Максимальний вік
  * @returns {object} 200 - All User
@@ -30,7 +32,29 @@ var Crud_Users = require('../models/crud.user.models');
 //     crudUserSchema.close()
 // });
 userRouter.get('/', (request, response, next) => {
-    Crud_Users.find(request.query)
+    const min_age = 15;
+    const max_age = 26;
+    // let min_age = ( { $and : [{ age : {"$gte": min_age} }]});
+    // let max_age = ( { $and : [{ age : {"$lte": Number} }]});
+    // let min_age = request.params.age;
+    // let min_age = query.exec();
+    // let min_age = ( { $and : [{ age : {"$gte": min_age} }]});
+    
+    // .where( { $query: { $and : [{ age : {"$gte": min_age} }, { age : {"$lte": max_age}} ] } })
+    // .where("first_name").regex(/^[A-Z][a-z]+/)
+    // .query.$where('this.first_name.length === 4')
+
+    // .findOne({ "first_name" : { $regex: /^[A-Z][a-z]+/ } },
+    // function (error, person) {
+    //     if (error) return handleError(err);
+    //     console.log('%s %s is a %s.', person.first_name);
+    // })
+    
+    // document.write()
+    // { first_name: { $regex: "/^w/" } }, 
+    // .setQuery("$lte" : 15)
+    // .aggregate( { $and : [{ age : {"$gte": 15} }, { age : {"$lte": 40} }] }) 
+    //     "max_age" : {"$lte" : request.age.query})
     // Crud_Users.find({$regex: new RegExp(query)},
     // {_id: 0, __v: 0},
     // function(error, data){
@@ -43,6 +67,13 @@ userRouter.get('/', (request, response, next) => {
     // }
     // .regex(/\w+/g)
     // .where("first_name")
+    // .find( { $and : [{ age : {"$gte": 15} }, { age : {"$lte": 40} }] })
+    // Crud_Users.find( {age: {"$lge": 15}} );
+    // Crud_Users.find( { age : {"$gte": 45}} )
+
+    Crud_Users
+    .where("age").gte(min_age).lte(max_age)
+    .find(request.query)
     .exec()
     .then(documents => {
         console.log(documents);
@@ -100,7 +131,7 @@ userRouter.get('/:userId', (request, response, next) => {
  */
 userRouter.post('/', (request, response, next) => {
     const crudUser = new Crud_Users({
-        _id: new mongoose.Types.ObjectId(),
+        // _id: new mongoose.Types.ObjectId(),
         first_name: request.body.first_name,
         last_name: request.body.last_name,
         age: request.body.age
@@ -163,8 +194,8 @@ userRouter.put('/:userId', (request, response, next) => {
 userRouter.delete('/:userId', (request, response, next) => {
     const id = request.params.userId;
     Crud_Users.remove({_id: id})
-        .exec().
-        then(result => {
+        .exec()
+        .then(result => {
             response.status(200).json(result);
         })
         .catch(error => {

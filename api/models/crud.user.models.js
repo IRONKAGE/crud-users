@@ -7,4 +7,7 @@ var crudUserSchema = mongoose.Schema(
     age: Number},
     {versionKey: false});
 
+// var min_age = ( { $and : [{ age : {"$gte": min_age} }]});
+// exports.min_age = crudUserSchema.find({ age: { $lte: 15 }});
+
 module.exports = mongoose.model('Crud_Users', crudUserSchema);
