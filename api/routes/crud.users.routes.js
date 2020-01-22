@@ -33,7 +33,7 @@ var Crud_Users = require('../models/crud.user.models');
 // });
 userRouter.get('/', (request, response, next) => {
     const min_age = 15;
-    const max_age = 26;
+    const max_age = 35;
     // let min_age = ( { $and : [{ age : {"$gte": min_age} }]});
     // let max_age = ( { $and : [{ age : {"$lte": Number} }]});
     // let min_age = request.params.age;
