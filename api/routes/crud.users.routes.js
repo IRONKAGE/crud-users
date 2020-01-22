@@ -2,6 +2,7 @@
 
 var express = require('express');
 var userRouter = express.Router();
+var mongoose = require('mongoose');
 
 /**
  * @typedef CrudUsers
@@ -131,7 +132,7 @@ userRouter.get('/:userId', (request, response, next) => {
  */
 userRouter.post('/', (request, response, next) => {
     const crudUser = new Crud_Users({
-        // _id: new mongoose.Types.ObjectId(),
+        _id: new mongoose.Types.ObjectId(),
         first_name: request.body.first_name,
         last_name: request.body.last_name,
         age: request.body.age
