@@ -1,0 +1,18 @@
+{
+    "db": {
+        "name": "db",
+        "connector": "memory"
+    },
+    "MongoDB": {
+        "host": "localhost",
+        "port": 27017,
+        "url": "mongodb://localhost:27017/inverita_users",
+        "database": "inverita_users",
+        "password": "",
+        "name": "MongoDB",
+        "user": "",
+        "useNewUrlParser": true,
+        "useUnifiedTopology": true,
+        "connector": "mongodb"
+    }
+}

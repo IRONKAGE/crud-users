@@ -1,1 +1,7 @@
-node_modules
+.vscode/
+node_modules/
+trash/
+api/db/db.json
+api/models/user.model.js
+api/routes/user.routes.js
+api/controllers/user.controller.js
