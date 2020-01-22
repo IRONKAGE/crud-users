@@ -12,8 +12,6 @@ var mongoose = require('mongoose');
  * @property {number} age.required
  */
 var Crud_Users = require('../models/crud.user.models');
-// var min_age = document.createElement("man_age").value;
-
 
 /**
  * This function gets main
@@ -27,50 +25,9 @@ var Crud_Users = require('../models/crud.user.models');
  * @returns {object} 200 - All User
  * @returns {Error}  default - Unexpected error
  */
-
-// var min_age = {age: $gte};
-// crudUserSchema.collection("age").sort(query).toArray(function(error, response){
-//     crudUserSchema.close()
-// });
 userRouter.get('/', (request, response, next) => {
     const min_age = 15;
     const max_age = 35;
-    // let min_age = ( { $and : [{ age : {"$gte": min_age} }]});
-    // let max_age = ( { $and : [{ age : {"$lte": Number} }]});
-    // let min_age = request.params.age;
-    // let min_age = query.exec();
-    // let min_age = ( { $and : [{ age : {"$gte": min_age} }]});
-    
-    // .where( { $query: { $and : [{ age : {"$gte": min_age} }, { age : {"$lte": max_age}} ] } })
-    // .where("first_name").regex(/^[A-Z][a-z]+/)
-    // .query.$where('this.first_name.length === 4')
-
-    // .findOne({ "first_name" : { $regex: /^[A-Z][a-z]+/ } },
-    // function (error, person) {
-    //     if (error) return handleError(err);
-    //     console.log('%s %s is a %s.', person.first_name);
-    // })
-    
-    // document.write()
-    // { first_name: { $regex: "/^w/" } }, 
-    // .setQuery("$lte" : 15)
-    // .aggregate( { $and : [{ age : {"$gte": 15} }, { age : {"$lte": 40} }] }) 
-    //     "max_age" : {"$lte" : request.age.query})
-    // Crud_Users.find({$regex: new RegExp(query)},
-    // {_id: 0, __v: 0},
-    // function(error, data){
-    //     response.json(data);
-    // }).limit(10)
-
-    // request.query = {"first_name": /\w+/}, {"age": {$lte : request.age.query}} || {
-    //     "min_age" : {"$gte" : request.age.query},
-    //     "max_age" : {"$lte" : request.age.query}
-    // }
-    // .regex(/\w+/g)
-    // .where("first_name")
-    // .find( { $and : [{ age : {"$gte": 15} }, { age : {"$lte": 40} }] })
-    // Crud_Users.find( {age: {"$lge": 15}} );
-    // Crud_Users.find( { age : {"$gte": 45}} )
 
     Crud_Users
     .where("age").gte(min_age).lte(max_age)
