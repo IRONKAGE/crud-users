@@ -1,5 +1,3 @@
-'use strict'
-
 var express = require('express');
 var userRouter = express.Router();
 var mongoose = require('mongoose');
@@ -13,6 +11,7 @@ var mongoose = require('mongoose');
  */
 var Crud_Users = require('../models/crud.user.models');
 
+
 /**
  * This function gets main
  * @route GET /users
@@ -25,30 +24,49 @@ var Crud_Users = require('../models/crud.user.models');
  * @returns {object} 200 - All User
  * @returns {Error}  default - Unexpected error
  */
-userRouter.get('/', (request, response, next) => {
-    const min_age = 15;
-    const max_age = 35;
+userRouter.get('/', async (request, response, next) => {
+    console.log('request.body :', request.body);
+    console.log('request.query :', request.query);
 
-    Crud_Users
-    .where("age").gte(min_age).lte(max_age)
-    .find(request.query)
-    .exec()
-    .then(documents => {
-        console.log(documents);
-        if (documents.length >= 0){
-            response.status(200).json(documents);
-        }else{
-            response.status(404).json({
-                message: 'Такої сторінки не знайдено'
-            });
+    // Дані, які можна отримати з Crud_Users
+    const {
+        first_name,
+        last_name,
+        age,
+        min_age = 0,
+        max_age = 150
+    } = request.query;
+
+    // запити для БД
+    let query = {};
+
+    if (first_name) {
+        query.first_name = first_name;
+    }
+
+    if (last_name) {
+        query.last_name = last_name;
+    }
+
+    if (min_age && max_age) {
+        query.age = {
+            $gte: Number(min_age),
+            $lte: Number(max_age)
         }
-    })
-    .catch(error => {
-        console.log(error);
-        response.status(500).json({
-            error: error
-        });
-    });
+    }
+
+    if (age) {
+        query.age = age;
+    }
+
+    //  виконання запитів
+    try {
+        const queryUser = await Crud_Users.find(query);
+        response.json(queryUser);
+    } catch (error) {
+        response.status(500).send(error);
+        console.error(error);
+    }
 });
 
 
@@ -60,22 +78,25 @@ userRouter.get('/', (request, response, next) => {
  * @returns {object} 200 - User info
  * @returns {Error}  default - Unexpected error
  */
-userRouter.get('/:userId', (request, response, next) => {
+userRouter.get('/:userId', async (request, response, next) => {
     const id = request.params.userId;
-    Crud_Users.findById(id)
-        .exec()
-        .then(document => {
-            console.log("З Бази данних", document);
-            if (document){
-                response.status(200).json(document);
-            }else{
-                response.status(404).json({message: 'Не знайдено данних для данного ID'});
-            }
-        })
-        .catch(error => {
-            console.log(error);
-            response.status(500).json({error: error});
-        });
+    try {
+        const idUser = await Crud_Users.findById(id)
+                            .then(idUser => {
+                                console.log("З Бази данних", idUser);
+                                if (idUser) {
+                                    response.status(200).json(idUser);
+                                } else {
+                                    response.status(404).json({
+                                        message: 'Не знайдено данних для данного ID'
+                                    });
+                                }
+                            })
+        response.json(idUser);
+    } catch (error) {
+        response.status(500).send(error);
+        console.error(error);
+    }
 });
 
 
@@ -87,28 +108,26 @@ userRouter.get('/:userId', (request, response, next) => {
  * @returns {object} 200 - User created
  * @returns {Error}  default - Unexpected error
  */
-userRouter.post('/', (request, response, next) => {
-    const crudUser = new Crud_Users({
-        _id: new mongoose.Types.ObjectId(),
-        first_name: request.body.first_name,
-        last_name: request.body.last_name,
-        age: request.body.age
-    });
-    crudUser
-    .save()
-    .then(result => {
-        console.log(result);
-        response.status(201).json({
-            message: "POST запит",
-            createdCrudUser: result
-        });
-    })
-    .catch(error => {
-        console.log(error);
-        response.status(500).json({
-            error: error
-        });
-    });
+userRouter.post('/', async (request, response, next) => {
+    try {
+        const postUser = await new Crud_Users({
+                                _id: new mongoose.Types.ObjectId(),
+                                first_name: request.body.first_name,
+                                last_name: request.body.last_name,
+                                age: request.body.age})
+                            .save()
+                            .then(result => {
+                                console.log(result);
+                                response.status(201).json({
+                                    message: "POST запит",
+                                    createdCrudUser: result
+                                });
+                            })
+        response.json(postUser);
+    } catch(error) {
+        response.status(500).send(error);
+        console.error(error);
+    }
 });
 
 
@@ -120,24 +139,24 @@ userRouter.post('/', (request, response, next) => {
  * @returns {object} 200 - User updated
  * @returns {Error}  default - Unexpected error
  */
-userRouter.put('/:userId', (request, response, next) => {
-    const id = request.params.userId;
-    const updateOperations = {};
-    for (const operations of request.body){
-        updateOperations[operations.changeNames] = operations.value;
+userRouter.put('/:userId', async (request, response, next) => {
+    try {
+        const putUser = await  Crud_Users.findByIdAndUpdate({
+                                    _id: request.body.id,
+                                }, {
+                                    $set: request.body,
+                                }, {
+                                    new: true,
+                                })
+                            .then(result => {
+                                console.log(response);
+                                response.status(200).json(result);
+                            })
+        response.json(putUser);
+    } catch(error) {
+        response.status(500).send(error);
+        console.error(error);
     }
-    Crud_Users.update({_id: id}, {$set: updateOperations})
-        .exec()
-        .then(result =>  {
-            console.log(response);
-            response.status(200).json(result);
-        })
-        .catch(error => {
-            console.log(error);
-            response.status(500).json({
-                error: error
-            });
-        });
 });
 
 
@@ -149,19 +168,20 @@ userRouter.put('/:userId', (request, response, next) => {
  * @returns {object} 200 - User deleted
  * @returns {Error}  default - Unexpected error
  */
-userRouter.delete('/:userId', (request, response, next) => {
+userRouter.delete('/:userId', async (request, response, next) => {
     const id = request.params.userId;
-    Crud_Users.remove({_id: id})
-        .exec()
-        .then(result => {
-            response.status(200).json(result);
-        })
-        .catch(error => {
-            console.lof(error);
-            response.status(500).json({
-                error: error
-            });
-        });
+    try {
+        const deleteUser = await Crud_Users.remove({
+                                        _id: id
+                                    })
+                                    .then(result => {
+                                        response.status(200).json(result);
+                                    })
+        response.json(deleteUser);
+    } catch(error) {
+        response.status(500).send(error);
+        console.error(error);
+    }
 });
 
 module.exports = userRouter;
